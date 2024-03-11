@@ -1,35 +1,72 @@
-﻿<Project Sdk="Bannerlord.BUTRModule.Sdk/1.0.1.68">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>1.8.0.1</Version>
-    <TargetFramework>net472</TargetFramework>
+    <Version>2.0.0</Version>
+    <TargetFrameworks>net472;net6</TargetFrameworks>
     <Platforms>x64</Platforms>
     <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
-    
+    <BuildForWindows>false</BuildForWindows>
+    <BuildForWindowsStore>false</BuildForWindowsStore>
     <ModuleId>$(MSBuildProjectName)</ModuleId>
     <ModuleName>$(MSBuildProjectName)</ModuleName>
+    <ModuleUrl>https://github.com/AlekseyAfonin/ShowTraitExp</ModuleUrl>
     <GameFolder>$(BANNERLORD_GAME_DIR)</GameFolder>
-    <!-- Module manually override GameVersion -->
-    <!-- <OverrideGameVersion>e1.8.0</OverrideGameVersion> -->
+    <GameBinariesFolder Condition="Exists('$(GameFolder)\bin\Win64_Shipping_Client\Bannerlord.exe')">Win64_Shipping_Client</GameBinariesFolder>
+    <GameBinariesFolder Condition="Exists('$(GameFolder)\bin\Gaming.Desktop.x64_Shipping_Client\Bannerlord.exe')">Gaming.Desktop.x64_Shipping_Client</GameBinariesFolder>
   </PropertyGroup>
 
-  <!-- Development Variables -->
-  <PropertyGroup>
-    <HarmonyVersion>2.2.1</HarmonyVersion>
+  <PropertyGroup Condition="$(TargetFramework) == 'net472'">
+    <BuildForWindows>true</BuildForWindows>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework) == 'net6'">
+    <BuildForWindowsStore>false</BuildForWindowsStore>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" PrivateAssets="all" IncludeAssets="compile" />
-    <PackageReference Include="Nullable" Version="1.3.0" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
-    <PackageReference Include="IsExternalInit" Version="1.0.2" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
-    <PackageReference Include="Harmony.Extensions" Version="3.1.0.61" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
-    <PackageReference Include="BUTR.Harmony.Analyzer" Version="1.0.1.44" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
-    <PackageReference Update="Lib.Harmony" Version="2.2.2" />
+    <Reference Include="$(GameFolder)\bin\$(GameBinariesFolder)\Newtonsoft.Json.dll">
+      <HintPath>%(Identity)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="$(GameFolder)\bin\$(GameBinariesFolder)\TaleWorlds.*.dll" Exclude="$(GameFolder)\bin\$(GameBinariesFolder)\TaleWorlds.Native.dll">
+      <HintPath>%(Identity)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="$(GameFolder)\Modules\Native\bin\$(GameBinariesFolder)\*.dll">
+      <HintPath>%(Identity)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="$(GameFolder)\Modules\SandBox\bin\$(GameBinariesFolder)\*.dll">
+      <HintPath>%(Identity)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="$(GameFolder)\Modules\SandBoxCore\bin\$(GameBinariesFolder)\*.dll">
+      <HintPath>%(Identity)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="$(GameFolder)\Modules\StoryMode\bin\$(GameBinariesFolder)\*.dll">
+      <HintPath>%(Identity)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="$(GameFolder)\Modules\CustomBattle\bin\$(GameBinariesFolder)\*.dll">
+      <HintPath>%(Identity)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="$(GameFolder)\Modules\BirthAndDeath\bin\$(GameBinariesFolder)\*.dll">
+      <HintPath>%(Identity)</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="Bannerlord.ReferenceAssemblies.EarlyAccess" Version="1.8.0.316217" />
+    <PackageReference Include="Nullable" Version="1.3.1" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" IncludeAssets ="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Include="Bannerlord.BuildResources" Version="1.1.0.104" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Include="Bannerlord.Lib.Harmony" Version="2.2.2" IncludeAssets="compile" />
+    <PackageReference Include="Harmony.Extensions" Version="3.2.0.77" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Include="BUTR.Harmony.Analyzer" Version="1.0.1.50" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
   </ItemGroup>
-  
+
 </Project>

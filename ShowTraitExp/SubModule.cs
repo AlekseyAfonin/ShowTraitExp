@@ -1,29 +1,44 @@
-﻿using System.Reflection;
-using HarmonyLib;
+﻿using HarmonyLib;
+using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
-namespace ShowTraitExp;
 
-public class SubModule : MBSubModuleBase
+namespace ShowTraitExp
 {
-    private Harmony? _harmony;
-    private Assembly? _assembly;
-    
-    protected override void OnSubModuleLoad()
+    public class SubModule : MBSubModuleBase
     {
-        base.OnSubModuleLoad();
-        try
+        private Harmony? _harmony;
+        private Assembly? _assembly;
+
+        protected override void OnSubModuleLoad()
         {
-            _harmony = new Harmony("ShowTraitExp");
-            _assembly = Assembly.GetExecutingAssembly();
-            _harmony.PatchAll(_assembly);
+            base.OnSubModuleLoad();
+            try
+            {
+                _harmony = new Harmony("ShowTraitExp");
+                _assembly = Assembly.GetExecutingAssembly();
+                _harmony.PatchAll(_assembly);
+            }
+            catch (MBException e)
+            {
+                InformationManager.DisplayMessage(
+                    new InformationMessage($"ShowTraitExp loading problem. {e.Message}", Colors.Red));
+            }
+
         }
-        catch (MBException e)
+
+        protected override void OnSubModuleUnloaded()
         {
-            InformationManager.DisplayMessage(
-                new InformationMessage($"ShowTraitExp loading problem. {e.Message}", Colors.Red));
+            base.OnSubModuleUnloaded();
+
+        }
+
+        protected override void OnBeforeInitialModuleScreenSetAsRoot()
+        {
+            base.OnBeforeInitialModuleScreenSetAsRoot();
+
         }
     }
 }
