@@ -15,7 +15,7 @@ When you gain or lose experience in a trait, the corresponding information is di
 
 ## Installation
 
-You can download the mod at [NexusMods](https://www.nexusmods.com/mountandblade2bannerlord/mods/3684)
+You can download the mod at [NexusMods](https://www.nexusmods.com/mountandblade2bannerlord/mods/3684) or [SteamWorkshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3179885366)
 and follow instructions.
 
 ## The project used
