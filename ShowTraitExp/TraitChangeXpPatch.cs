@@ -1,6 +1,8 @@
 using HarmonyLib;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.CharacterDevelopment;
+using TaleWorlds.Core;
+using TaleWorlds.Library;
 
 namespace ShowTraitExp;
 
@@ -11,10 +13,18 @@ internal class TraitChangeXpPatch
     {
         private static void Postfix(TraitObject trait, int xpValue, Hero referenceHero)
         {
-            var xpValueTotal = Campaign.Current.PlayerTraitDeveloper.GetPropertyValue(trait);
-            Campaign.Current.Models.CharacterDevelopmentModel.GetTraitLevelForTraitXp(
-                referenceHero, trait, xpValueTotal, out var traitLvl, out var xpAfterChangeValueClamped);
-            ShowTraitExp.PrintMessage(trait, xpValue, xpAfterChangeValueClamped, traitLvl);
+            try
+            {
+                var xpValueTotal = Campaign.Current.PlayerTraitDeveloper.GetPropertyValue(trait);
+                Campaign.Current.Models.CharacterDevelopmentModel.GetTraitLevelForTraitXp(
+                    referenceHero, trait, xpValueTotal, out var traitLvl, out var xpAfterChangeValueClamped);
+                ShowTraitExp.PrintMessage(trait, xpValue, xpAfterChangeValueClamped, traitLvl);
+            }
+            catch(MBException e)
+            {
+                InformationManager.DisplayMessage(
+                    new InformationMessage($"ShowTraitExp AddPlayerTraitXpAndLogEntryPatch exception: {e.Message}", Colors.Red));
+            }
         }
     }
 }
